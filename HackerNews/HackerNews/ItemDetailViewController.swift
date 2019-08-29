@@ -15,11 +15,7 @@ class ItemDetailViewController: UIViewController {
     @IBOutlet private weak var scoreLabel: UILabel!
     @IBOutlet private weak var authorLabel: UILabel!
     
-    @IBOutlet private weak var scrollview: UIScrollView! {
-        didSet {
-            
-        }
-    }
+    @IBOutlet private weak var scrollview: UIScrollView!
     @IBOutlet private weak var comment1: UILabel!
     @IBOutlet private weak var comment1Leading: NSLayoutConstraint!
     @IBOutlet private weak var comment2: UILabel!
@@ -63,5 +59,7 @@ class ItemDetailViewController: UIViewController {
         for index in 0 ..< item.comments.count {
             labelArray[index].text = item.comments[index].text
         }
+        
+        scrollview.contentSize = CGSize(width: view.bounds.width, height: scrollview.contentSize.height)
     }
 }
