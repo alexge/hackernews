@@ -90,6 +90,49 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E8F5D4F423182FE6001EC42E /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				E8FA31DC2316F92000E4E81F /* ItemListController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		E8F5D4F523182FF2001EC42E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E8FA31D62316EA3500E4E81F /* ItemListViewController.swift */,
+				E8FA31D72316EA3500E4E81F /* ItemListCell.swift */,
+				E8FA31D42316EA3500E4E81F /* ItemDetailViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E8F5D4F62318300D001EC42E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E8FA31D02316E0E800E4E81F /* Item.swift */,
+				E8FA31D22316E2DD00E4E81F /* Comment.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E8F5D4F72318301C001EC42E /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				E8FA31D52316EA3500E4E81F /* ItemList.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		E8F5D4F82318302A001EC42E /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				E8F5D4F223182817001EC42E /* CacheManager.swift */,
+			);
+			path = Cache;
+			sourceTree = "<group>";
+		};
 		E8FA31912316CC4400E4E81F = {
 			isa = PBXGroup;
 			children = (
@@ -114,15 +157,12 @@
 			isa = PBXGroup;
 			children = (
 				E8FA319D2316CC4400E4E81F /* AppDelegate.swift */,
-				E8FA31DC2316F92000E4E81F /* ItemListController.swift */,
-				E8FA31D02316E0E800E4E81F /* Item.swift */,
-				E8FA31D22316E2DD00E4E81F /* Comment.swift */,
-				E8FA31D42316EA3500E4E81F /* ItemDetailViewController.swift */,
-				E8FA31D52316EA3500E4E81F /* ItemList.storyboard */,
-				E8FA31D72316EA3500E4E81F /* ItemListCell.swift */,
-				E8FA31D62316EA3500E4E81F /* ItemListViewController.swift */,
-				E8F5D4F223182817001EC42E /* CacheManager.swift */,
+				E8F5D4F423182FE6001EC42E /* Controllers */,
+				E8F5D4F62318300D001EC42E /* Models */,
+				E8F5D4F72318301C001EC42E /* Storyboards */,
+				E8F5D4F523182FF2001EC42E /* Views */,
 				E8FA31BD2316D18600E4E81F /* Networking */,
+				E8F5D4F82318302A001EC42E /* Cache */,
 				E8FA31A42316CC4600E4E81F /* Assets.xcassets */,
 				E8FA31A62316CC4600E4E81F /* LaunchScreen.storyboard */,
 				E8FA31A92316CC4600E4E81F /* Info.plist */,

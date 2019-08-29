@@ -28,34 +28,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-//        if(!FileManager.default.fileExists(atPath: Keys.favoritesPath)){
-//            let data: [String:String] = [:]
-//            let nsData = NSDictionary(dictionary: data)
-//            nsData.write(toFile: Keys.favoritesPath, atomically: true)
-//        }
-        
         // Setup Window
         let window = UIWindow()
         self.window = window
         
         requestPerformer = RequestPerformer()
-//        requestPerformer?.fetchTopItemIds { array in
-////            guard let array = array else { return }
-//            requestPerformer?.fetchItemDetail(itemID: String(array.first!)) { item in
-//                requestPerformer?.fetchComment(commentID: String(item!.commentList.first!), successHandler: { (comment) in
-//
-//                })
-//            }
-//        }
         
         listController = ItemListController(navigationController: navigationController)
         
-//        window.rootViewController = controller
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
-        
-        // start loading the results
-//        listController = CharacterListController(navigationController: navigationController)
         
         return true
     }
