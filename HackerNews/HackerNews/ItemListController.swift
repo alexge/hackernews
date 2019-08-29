@@ -33,6 +33,8 @@ class ItemListController: NSObject {
     
     private var partialItems = [Item]()
     
+    private var cacheManager = CacheManager()
+    
     init(navigationController: UINavigationController) {
         navController = navigationController
         guard let viewController = storyboard.instantiateViewController(withIdentifier: "ItemListViewController") as? ItemListViewController else {
@@ -97,24 +99,19 @@ class ItemListController: NSObject {
 }
 
 extension ItemListController: ItemListViewControllerDelegate {
-    func didSelectScore() {
-        items = items.sorted(by: { $0.score > $1.score })
-    }
-    
-    func didSelectTitle() {
-        items = items.sorted(by: { $0.title < $1.title })
-    }
-    
-    func didSelectAuthor() {
-        items = items.sorted(by: { $0.user < $1.user })
-    }
     
     internal func didSelectItem(_ item: Item) {
         guard let detailVC = storyboard.instantiateViewController(withIdentifier: "ItemDetailViewController") as? ItemDetailViewController else {
             return
         }
-        detailVC.item = item
-        navController.pushViewController(detailVC, animated: true)
+        if let cachedItem = cacheManager.loadFromCache(itemID: String(item.id)) {
+            detailVC.item = cachedItem
+            navController.pushViewController(detailVC, animated: true)
+            return
+        } else {
+            detailVC.item = item
+            navController.pushViewController(detailVC, animated: true)
+        }
         
         let commentNumber = item.commentList.count > 5 ? 5 : item.commentList.count
         DispatchQueue.global(qos: .background).async { [weak self] in
@@ -126,6 +123,7 @@ extension ItemListController: ItemListViewControllerDelegate {
                     }
                     if mutableItem.comments.count == commentNumber {
                         detailVC.item = mutableItem
+                        self?.cacheManager.saveToCache(item: mutableItem)
                     }
                 }
             }
@@ -135,5 +133,17 @@ extension ItemListController: ItemListViewControllerDelegate {
     internal func didReachBottom() {
         guard !isLoading else { return }
         loadNextPage()
+    }
+    
+    func didSelectScore() {
+        items = items.sorted(by: { $0.score > $1.score })
+    }
+    
+    func didSelectTitle() {
+        items = items.sorted(by: { $0.title < $1.title })
+    }
+    
+    func didSelectAuthor() {
+        items = items.sorted(by: { $0.user < $1.user })
     }
 }

@@ -11,7 +11,8 @@ import Foundation
 class JSONParser {
     
     func itemFrom(json: [String:Any]) -> Item? {
-        guard let title = json["title"] as? String,
+        guard let id = json["id"] as? Int,
+            let title = json["title"] as? String,
             let user = json["by"] as? String,
             let score = json["score"] as? Int,
             let type = json["type"] as? String
@@ -20,7 +21,7 @@ class JSONParser {
         }
         let comments = json["kids"] as? [Int] ?? []
         
-        return Item(title: title, user: user, score: score, description: type, commentList: comments, comments: [])
+        return Item(id: id, title: title, user: user, score: score, description: type, commentList: comments, comments: [])
     }
     
     func commentFrom(json: [String:Any]) -> Comment? {

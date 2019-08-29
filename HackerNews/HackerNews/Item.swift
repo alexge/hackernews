@@ -8,7 +8,8 @@
 
 import Foundation
 
-struct Item {
+struct Item: Codable {
+    let id: Int
     let title: String
     let user: String
     let score: Int
