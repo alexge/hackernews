@@ -97,6 +97,18 @@ class ItemListController: NSObject {
 }
 
 extension ItemListController: ItemListViewControllerDelegate {
+    func didSelectScore() {
+        items = items.sorted(by: { $0.score > $1.score })
+    }
+    
+    func didSelectTitle() {
+        items = items.sorted(by: { $0.title < $1.title })
+    }
+    
+    func didSelectAuthor() {
+        items = items.sorted(by: { $0.user < $1.user })
+    }
+    
     internal func didSelectItem(_ item: Item) {
         guard let detailVC = storyboard.instantiateViewController(withIdentifier: "ItemDetailViewController") as? ItemDetailViewController else {
             return

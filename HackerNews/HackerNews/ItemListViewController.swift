@@ -11,6 +11,9 @@ import UIKit
 protocol ItemListViewControllerDelegate: class {
     func didSelectItem(_ character: Item)
     func didReachBottom()
+    func didSelectScore()
+    func didSelectTitle()
+    func didSelectAuthor()
 }
 
 class ItemListViewController: UIViewController {
@@ -42,6 +45,18 @@ class ItemListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView?.reloadData()
+    }
+    
+    @IBAction func didTapScore(_ sender: Any) {
+        delegate?.didSelectScore()
+    }
+    
+    @IBAction func didTapTitle(_ sender: Any) {
+        delegate?.didSelectTitle()
+    }
+    
+    @IBAction func didTapAuthor(_ sender: Any) {
+        delegate?.didSelectAuthor()
     }
 }
 
