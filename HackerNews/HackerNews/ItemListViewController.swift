@@ -24,8 +24,10 @@ class ItemListViewController: UIViewController {
     
     var items = [Item]() {
         didSet {
-            tableView?.reloadData()
-            tableView?.tableFooterView?.isHidden = true
+            DispatchQueue.main.async {
+                self.tableView?.reloadData()
+                self.tableView?.tableFooterView?.isHidden = true
+            }
         }
     }
     
@@ -59,7 +61,7 @@ extension ItemListViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ItemListCell") else { return UITableViewCell() }
         guard let listCell = cell as? ItemListCell else { return cell }
         
-        listCell.bind(item: items[indexPath.row], indexPath: indexPath)
+        listCell.bind(item: items[indexPath.row])
         
         return listCell
     }

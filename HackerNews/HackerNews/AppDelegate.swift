@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-//    var listController: CharacterListController?
+    var listController: ItemListController?
     var navigationController = UINavigationController()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -39,17 +39,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = window
         
         requestPerformer = RequestPerformer()
-        requestPerformer?.fetchTopItemIds { array in
-//            guard let array = array else { return }
-            requestPerformer?.fetchItemDetail(itemID: String(array.first!)) { item in
-                requestPerformer?.fetchComment(commentID: String(item!.commentList.first!), successHandler: { (comment) in
-                    
-                })
-            }
-        }
+//        requestPerformer?.fetchTopItemIds { array in
+////            guard let array = array else { return }
+//            requestPerformer?.fetchItemDetail(itemID: String(array.first!)) { item in
+//                requestPerformer?.fetchComment(commentID: String(item!.commentList.first!), successHandler: { (comment) in
+//
+//                })
+//            }
+//        }
+        
+        listController = ItemListController(navigationController: navigationController)
         
 //        window.rootViewController = controller
-        window.rootViewController = UIViewController()
+        window.rootViewController = navigationController
         window.makeKeyAndVisible()
         
         // start loading the results
