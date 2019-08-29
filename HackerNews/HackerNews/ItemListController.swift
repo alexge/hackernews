@@ -103,6 +103,21 @@ extension ItemListController: ItemListViewControllerDelegate {
         }
         detailVC.item = item
         navController.pushViewController(detailVC, animated: true)
+        
+        let commentNumber = item.commentList.count > 5 ? 5 : item.commentList.count
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            var mutableItem = item
+            for index in 0 ..< commentNumber {
+                requestPerformer?.fetchComment(commentID: String(mutableItem.commentList[index])) { comment in
+                    if let comment = comment {
+                        mutableItem.comments.append(comment)
+                    }
+                    if mutableItem.comments.count == commentNumber {
+                        detailVC.item = mutableItem
+                    }
+                }
+            }
+        }
     }
     
     internal func didReachBottom() {
@@ -110,27 +125,3 @@ extension ItemListController: ItemListViewControllerDelegate {
         loadNextPage()
     }
 }
-
-//extension ItemListController: UIViewControllerTransitioningDelegate {
-//    internal func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        if let _ = presented as? CharacterDetailViewController {
-//            return CharacterAnimationController(type: .fadeIn)
-//        } else {
-//            return nil
-//        }
-//    }
-//
-//    internal func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        if let _ = dismissed as? CharacterDetailViewController {
-//            return CharacterAnimationController(type: .fadeOut)
-//        } else {
-//            return nil
-//        }
-//    }
-//}
-//
-//extension ItemListController: CharacterDetailViewControllerDelegate {
-//    internal func favoriteButtonTapped(character: Character) {
-//        toggleFavorite(character: character)
-//    }
-//}

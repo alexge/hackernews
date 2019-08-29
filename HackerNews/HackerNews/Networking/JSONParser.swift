@@ -31,6 +31,6 @@ class JSONParser {
                 return nil
         }
         
-        return Comment(id: id, parent: parent, text: text)
+        return Comment(id: id, parent: parent, text: text, level: 0)
     }
 }

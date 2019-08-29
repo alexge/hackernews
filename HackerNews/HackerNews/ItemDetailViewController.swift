@@ -15,6 +15,11 @@ class ItemDetailViewController: UIViewController {
     @IBOutlet private weak var scoreLabel: UILabel!
     @IBOutlet private weak var authorLabel: UILabel!
     
+    @IBOutlet private weak var scrollview: UIScrollView! {
+        didSet {
+            
+        }
+    }
     @IBOutlet private weak var comment1: UILabel!
     @IBOutlet private weak var comment1Leading: NSLayoutConstraint!
     @IBOutlet private weak var comment2: UILabel!
@@ -29,7 +34,9 @@ class ItemDetailViewController: UIViewController {
     var item: Item? {
         didSet {
             if isViewLoaded {
-                configureSubviews()
+                DispatchQueue.main.async {
+                    self.configureSubviews()
+                }
             }
         }
     }
@@ -49,11 +56,11 @@ class ItemDetailViewController: UIViewController {
         authorLabel.text = item.user
         
         guard !item.comments.isEmpty else { return }
-        let commentNumber = item.comments.count > 5 ? 5 : item.comments.count
+        
         let labelArray: [UILabel] = [comment1, comment2, comment3, comment4, comment5]
         let constraintArray = [comment1Leading, comment2Leading, comment3Leading, comment4Leading, comment5Leading]
         
-        for index in 0 ..< commentNumber - 1 {
+        for index in 0 ..< item.comments.count {
             labelArray[index].text = item.comments[index].text
         }
     }

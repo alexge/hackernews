@@ -12,4 +12,5 @@ struct Comment {
     let id: Int
     let parent: Int
     let text: String
+    var level: Int
 }
