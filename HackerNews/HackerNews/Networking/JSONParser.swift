@@ -10,7 +10,19 @@ import Foundation
 
 class JSONParser {
     
-    func itemFrom(json: [String:Any]) -> Item? {
+    func parse<T>(type: T.Type, from json: Any) -> T? {
+        if type == Item.self, let json = json as? [String:Any] {
+            return item(from: json) as? T
+        } else if type == Comment.self, let json = json as? [String:Any] {
+            return comment(from: json) as? T
+        } else if type == [Int].self, let json = json as? [Int] {
+            return json as? T
+        } else {
+            return nil
+        }
+    }
+    
+    private func item(from json: [String:Any]) -> Item? {
         guard let id = json["id"] as? Int,
             let title = json["title"] as? String,
             let user = json["by"] as? String,
@@ -24,7 +36,7 @@ class JSONParser {
         return Item(id: id, title: title, user: user, score: score, description: type, commentList: comments, comments: [])
     }
     
-    func commentFrom(json: [String:Any]) -> Comment? {
+    private func comment(from json: [String:Any]) -> Comment? {
         guard let id = json["id"] as? Int,
             let parent = json["parent"] as? Int,
             let text = json["text"] as? String

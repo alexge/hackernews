@@ -10,14 +10,6 @@ import UIKit
 
 var requestPerformer: RequestPerformer?
 
-struct Keys {
-    static var favoritesPath: String {
-        let documentDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-        let path = documentDirectory.appending("/profile.plist")
-        return path
-    }
-}
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -41,7 +33,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
-
-
 }
-

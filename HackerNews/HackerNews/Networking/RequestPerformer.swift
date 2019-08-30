@@ -20,19 +20,10 @@ class RequestPerformer {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
         
-        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-            guard let data = data, error == nil else { return }
-            
-            var serializedJSONResponse: Any
-            do {
-                serializedJSONResponse = try JSONSerialization.jsonObject(with: data, options: [])
-            } catch {
-                return
+        let task = URLSession.shared.dataTask(with: urlRequest) { [weak self] data, response, error in
+            if let itemList = self?.decodeJSON(data: data, error: error, expectedType: [Int].self) {
+                successHandler(itemList)
             }
-            
-            guard let serializedJSONArray = serializedJSONResponse as? [Int] else { return }
-            
-            successHandler(serializedJSONArray)
         }
         task.resume()
     }
@@ -42,22 +33,10 @@ class RequestPerformer {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
         
-        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-            guard let data = data, error == nil else { return }
-            
-            var serializedJSONResponse: Any
-            do {
-                serializedJSONResponse = try JSONSerialization.jsonObject(with: data, options: [])
-            } catch {
-                return
+        let task = URLSession.shared.dataTask(with: urlRequest) { [weak self] data, response, error in
+            if let item = self?.decodeJSON(data: data, error: error, expectedType: Item.self) {
+                successHandler(item)
             }
-            
-            guard let serializedJSONArray = serializedJSONResponse as? [String:Any] else { return }
-            
-            let jsonParser = JSONParser()
-            let item = jsonParser.itemFrom(json: serializedJSONArray)
-            
-            successHandler(item)
         }
         task.resume()
     }
@@ -67,23 +46,25 @@ class RequestPerformer {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
         
-        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-            guard let data = data, error == nil else { return }
-            
-            var serializedJSONResponse: Any
-            do {
-                serializedJSONResponse = try JSONSerialization.jsonObject(with: data, options: [])
-            } catch {
-                return
+        let task = URLSession.shared.dataTask(with: urlRequest) { [weak self] data, response, error in
+            if let comment = self?.decodeJSON(data: data, error: error, expectedType: Comment.self) {
+                successHandler(comment)
             }
-            
-            guard let serializedJSONArray = serializedJSONResponse as? [String:Any] else { return }
-            
-            let jsonParser = JSONParser()
-            let comment = jsonParser.commentFrom(json: serializedJSONArray)
-            
-            successHandler(comment)
         }
         task.resume()
+    }
+    
+    private func decodeJSON<T>(data: Data?, error: Error?, expectedType: T.Type) -> T? {
+        guard let data = data, error == nil else { return nil }
+        
+        var serializedJSONResponse: Any
+        do {
+            serializedJSONResponse = try JSONSerialization.jsonObject(with: data, options: [])
+        } catch {
+            return nil
+        }
+        
+        let jsonParser = JSONParser()
+        return jsonParser.parse(type: T.self, from: serializedJSONResponse)
     }
 }
