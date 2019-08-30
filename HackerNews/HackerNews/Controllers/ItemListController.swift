@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ItemListController: NSObject {
+final class ItemListController: NSObject {
     
     private let navController: UINavigationController
     private let listViewController: ItemListViewController
@@ -35,14 +35,18 @@ class ItemListController: NSObject {
     
     private var cacheManager = CacheManager()
     
-    init(navigationController: UINavigationController) {
+    private var requestPerformer: RequestPerformable
+    
+    init(navigationController: UINavigationController, requestPerformer: RequestPerformable = RequestPerformer()) {
         navController = navigationController
         guard let viewController = storyboard.instantiateViewController(withIdentifier: "ItemListViewController") as? ItemListViewController else {
             listViewController = ItemListViewController()
+            self.requestPerformer = requestPerformer
             super.init()
             return
         }
         listViewController = viewController
+        self.requestPerformer = requestPerformer
         
         super.init()
         
@@ -58,7 +62,7 @@ class ItemListController: NSObject {
     private func loadItemList(completion: (() -> Void)? = nil) {
         isLoading = true
         DispatchQueue.global(qos: .background).async { [weak self] in
-            requestPerformer?.fetchTopItemIds { itemIDs in
+            self?.requestPerformer.fetchTopItemIds { itemIDs in
                 guard let strongSelf = self else { return }
                 strongSelf.itemsList = itemIDs
                 strongSelf.isLoading = false
@@ -83,7 +87,7 @@ class ItemListController: NSObject {
         for index in offset ..< offset + itemsToLoad {
             DispatchQueue.global(qos: .background).async { [weak self] in
                 guard let strongSelf = self else { return }
-                requestPerformer?.fetchItemDetail(itemID: String(strongSelf.itemsList[index])) { item in
+                strongSelf.requestPerformer.fetchItemDetail(itemID: String(strongSelf.itemsList[index])) { item in
                     if let item = item {
                         strongSelf.partialItems.append(item)
                         if strongSelf.partialItems.count == itemsToLoad {
@@ -117,7 +121,7 @@ extension ItemListController: ItemListViewControllerDelegate {
         DispatchQueue.global(qos: .background).async { [weak self] in
             var mutableItem = item
             for index in 0 ..< commentNumber {
-                requestPerformer?.fetchComment(commentID: String(mutableItem.commentList[index])) { comment in
+                self?.requestPerformer.fetchComment(commentID: String(mutableItem.commentList[index])) { comment in
                     if let comment = comment {
                         mutableItem.comments.append(comment)
                     }
@@ -135,15 +139,15 @@ extension ItemListController: ItemListViewControllerDelegate {
         loadNextPage()
     }
     
-    func didSelectScore() {
+    internal func didSelectScore() {
         items = items.sorted(by: { $0.score > $1.score })
     }
     
-    func didSelectTitle() {
+    internal func didSelectTitle() {
         items = items.sorted(by: { $0.title < $1.title })
     }
     
-    func didSelectAuthor() {
+    internal func didSelectAuthor() {
         items = items.sorted(by: { $0.user < $1.user })
     }
 }

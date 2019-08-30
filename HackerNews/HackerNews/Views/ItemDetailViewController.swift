@@ -57,3 +57,27 @@ final class ItemDetailViewController: UIViewController {
         scrollview.contentSize = CGSize(width: view.bounds.width, height: scrollview.contentSize.height)
     }
 }
+
+#if DEBUG
+extension ItemDetailViewController {
+    var exposedTitleLabel: UILabel {
+        return titleLabel
+    }
+    
+    var exposedDescriptionLabel: UILabel {
+        return descriptionLabel
+    }
+    
+    var exposedScoreLabel: UILabel {
+        return scoreLabel
+    }
+    
+    var exposedAuthorLabel: UILabel {
+        return authorLabel
+    }
+    
+    var exposedComment1Label: UILabel {
+        return comment1
+    }
+}
+#endif
