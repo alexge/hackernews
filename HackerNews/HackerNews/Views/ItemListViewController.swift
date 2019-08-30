@@ -16,7 +16,7 @@ protocol ItemListViewControllerDelegate: class {
     func didSelectAuthor()
 }
 
-class ItemListViewController: UIViewController {
+final class ItemListViewController: UIViewController {
     
     @IBOutlet private weak var tableView: UITableView? {
         didSet {

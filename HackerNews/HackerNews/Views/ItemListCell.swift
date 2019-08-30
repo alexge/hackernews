@@ -12,7 +12,7 @@ protocol CharacterListCellDelegate: class {
     func favoritesButtonTapped(character: Character, indexPath: IndexPath)
 }
 
-class ItemListCell: UITableViewCell {
+final class ItemListCell: UITableViewCell {
     @IBOutlet private weak var titleLabel: UILabel?
     @IBOutlet private weak var authorLabel: UILabel?
     @IBOutlet private weak var descriptionLabel: UILabel?

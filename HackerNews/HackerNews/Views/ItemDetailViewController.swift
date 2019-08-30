@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ItemDetailViewController: UIViewController {
+final class ItemDetailViewController: UIViewController {
     
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var descriptionLabel: UILabel!

@@ -8,19 +8,31 @@
 
 import Foundation
 
-class RequestPerformer {
+protocol RequestPerformable: class {
+    func fetchTopItemIds(successHandler: @escaping (([Int]) -> Void))
+    func fetchItemDetail(itemID: String, successHandler: @escaping ((Item?) -> Void))
+    func fetchComment(commentID: String, successHandler: @escaping ((Comment?) -> Void))
+}
+
+final class RequestPerformer: RequestPerformable {
     
     private let baseURL: String = "https://hacker-news.firebaseio.com/v0/"
     private let topStories: String = "topstories"
     private let itemPath: String = "item/"
     private let jsonQuery: String = ".json?print=pretty"
     
+    private let urlSession: URLSession
+    
+    init(urlSession: URLSession = URLSession.shared) {
+        self.urlSession = urlSession
+    }
+    
     func fetchTopItemIds(successHandler: @escaping (([Int]) -> Void)) {
         let url = URL(string: baseURL + topStories + jsonQuery)!
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
         
-        let task = URLSession.shared.dataTask(with: urlRequest) { [weak self] data, response, error in
+        let task = urlSession.dataTask(with: urlRequest) { [weak self] data, response, error in
             if let itemList = self?.decodeJSON(data: data, error: error, expectedType: [Int].self) {
                 successHandler(itemList)
             }
@@ -33,7 +45,7 @@ class RequestPerformer {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
         
-        let task = URLSession.shared.dataTask(with: urlRequest) { [weak self] data, response, error in
+        let task = urlSession.dataTask(with: urlRequest) { [weak self] data, response, error in
             if let item = self?.decodeJSON(data: data, error: error, expectedType: Item.self) {
                 successHandler(item)
             }
@@ -46,7 +58,7 @@ class RequestPerformer {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "GET"
         
-        let task = URLSession.shared.dataTask(with: urlRequest) { [weak self] data, response, error in
+        let task = urlSession.dataTask(with: urlRequest) { [weak self] data, response, error in
             if let comment = self?.decodeJSON(data: data, error: error, expectedType: Comment.self) {
                 successHandler(comment)
             }

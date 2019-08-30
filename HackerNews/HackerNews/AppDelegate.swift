@@ -8,8 +8,6 @@
 
 import UIKit
 
-var requestPerformer: RequestPerformer?
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -23,8 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Setup Window
         let window = UIWindow()
         self.window = window
-        
-        requestPerformer = RequestPerformer()
         
         listController = ItemListController(navigationController: navigationController)
         
