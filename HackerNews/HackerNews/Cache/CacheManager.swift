@@ -15,8 +15,12 @@ struct CacheManager {
     init() {
         let directoryURL = cacheDirectoryURL(for: "")
         var x: ObjCBool = true
-        if !FileManager.default.fileExists(atPath: directoryURL.absoluteString, isDirectory: &x) {
-            try? FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: false, attributes: nil)
+        if !FileManager.default.fileExists(atPath: directoryURL.path, isDirectory: &x) {
+            do {
+                try FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true, attributes: nil)
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
     
@@ -49,8 +53,16 @@ struct CacheManager {
     }
     
     private func cacheDirectoryURL(for ID: String) -> URL {
-        //swiftlint:disable next force_unwrapping
         let path = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first!
         return URL(fileURLWithPath: path).appendingPathComponent(directoryPath + ID)
     }
 }
+
+#if DEBUG
+extension CacheManager {
+    var exposedCacheDirectory: URL {
+        let path = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first!
+        return URL(fileURLWithPath: path).appendingPathComponent(directoryPath)
+    }
+}
+#endif

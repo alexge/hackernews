@@ -17,15 +17,10 @@ final class ItemDetailViewController: UIViewController {
     
     @IBOutlet private weak var scrollview: UIScrollView!
     @IBOutlet private weak var comment1: UILabel!
-    @IBOutlet private weak var comment1Leading: NSLayoutConstraint!
     @IBOutlet private weak var comment2: UILabel!
-    @IBOutlet private weak var comment2Leading: NSLayoutConstraint!
     @IBOutlet private weak var comment3: UILabel!
-    @IBOutlet private weak var comment3Leading: NSLayoutConstraint!
     @IBOutlet private weak var comment4: UILabel!
-    @IBOutlet private weak var comment4Leading: NSLayoutConstraint!
     @IBOutlet private weak var comment5: UILabel!
-    @IBOutlet private weak var comment5Leading: NSLayoutConstraint!
     
     var item: Item? {
         didSet {
@@ -54,7 +49,6 @@ final class ItemDetailViewController: UIViewController {
         guard !item.comments.isEmpty else { return }
         
         let labelArray: [UILabel] = [comment1, comment2, comment3, comment4, comment5]
-        let constraintArray = [comment1Leading, comment2Leading, comment3Leading, comment4Leading, comment5Leading]
         
         for index in 0 ..< item.comments.count {
             labelArray[index].text = item.comments[index].text

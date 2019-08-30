@@ -51,14 +51,14 @@ class JSONParser {
             let parent = json["parent"] as? Int,
             let text = json["text"] as? String {
             
-            return Comment(id: id, parent: parent, text: text, level: 0)
+            return Comment(id: id, parent: parent, text: text)
         } else if let stringid = json["id"] as? String,
             let id = Int(stringid),
             let stringparent = json["parent"] as? String,
             let parent = Int(stringparent),
             let text = json["text"] as? String {
         
-            return Comment(id: id, parent: parent, text: text, level: 0)
+            return Comment(id: id, parent: parent, text: text)
         } else {
             return nil
         }

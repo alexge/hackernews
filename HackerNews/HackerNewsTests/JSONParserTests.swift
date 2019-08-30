@@ -87,13 +87,12 @@ class JSONParserTests: XCTestCase {
         
         // Act
         let result = jsonParser.parse(type: Comment.self, from: json)
-        let comment = Comment(id: 1, parent: 1, text: "thisisacomment", level: 0)
+        let comment = Comment(id: 1, parent: 1, text: "thisisacomment")
         
         // Assert
         XCTAssertEqual(result?.parent,comment.parent)
         XCTAssertEqual(result?.id,comment.id)
         XCTAssertEqual(result?.text,comment.text)
-        XCTAssertEqual(result?.level,comment.level)
     }
     
     func testParseForComment_WithDictJSONWithIncorrectKeys_ShouldReturnNil() {

@@ -12,5 +12,4 @@ struct Comment: Codable {
     let id: Int
     let parent: Int
     let text: String
-    var level: Int
 }
